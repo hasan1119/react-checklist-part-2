@@ -1,25 +1,61 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState,useEffect} from 'react'
+function App() { 
 
-function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <div style={{ display:'flex',flexWrap:'wrap', justifyContent:"space-between"}}>
+      <GetTodo></GetTodo>
+  </div>
   );
 }
 
+
+
+function GetTodo(){
+  const [Todo,setTodo] = useState([])
+  useEffect(()=>{
+
+    fetch('https://jsonplaceholder.typicode.com/todos')
+    .then(res=>res.json())
+    .then(data=>setTodo(data))
+
+  },[])
+return(
+ 
+
+ Todo.map(w => <ShowData  title={w.title} status={w.completed}></ShowData>)
+
+
+)
+
+}
+
+
+function ShowData (props){
+  let progress;
+  if(props.status){
+  progress = 'Completed'
+  }else{
+    progress = 'Incomplete'
+  }
+  console.log(props);
+  return(
+   <div  style={{width:'25%', height:"300px", margin: '15px', border:'2px solid green'}}>
+      <h2>Title: {props.title}</h2>
+      <p>isCompleted: <span className='status'> {progress}</span></p>
+   </div>
+  )
+}
+
+
+
+
+
+
+
+
+
+
 export default App;
+
+
